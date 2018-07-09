@@ -20,3 +20,16 @@ def purchase_history():
             print(f'{stock_dictionary[purchase[0]]} ({purchase[1] * purchase[3]})') 
 
 purchase_history()
+
+# Create a second purchase summary that which accumulates total investment by ticker symbol. 
+
+def list_investments():
+    print('Investments:')
+    investments = dict([(key, []) for key in stock_dictionary.keys()])
+    for purchase in purchases:
+        if purchase[0] in investments.keys():
+            investments[purchase[0]] += purchase
+
+    print(investments)
+
+list_investments()
