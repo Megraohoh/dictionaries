@@ -23,13 +23,33 @@ purchase_history()
 
 # Create a second purchase summary that which accumulates total investment by ticker symbol. 
 
-def list_investments():
-    print('Investments:')
-    investments = dict([(key, []) for key in stock_dictionary.keys()])
-    for purchase in purchases:
-        if purchase[0] in investments.keys():
-            investments[purchase[0]] += purchase
+# Steve's code:
+portfolio = dict()
+for purchase in purchases:
+    ticker = purchase[0]
 
-    print(investments)
+    full_company_name = stock_dictionary[ticker]
+    number_of_shares = purchase[1]
+    purchase_price = purchase[3]
+    full_purchase_price = number_of_shares * purchase_price
 
-list_investments()
+    minimal_purchase = (purchase[1], purchase[2], purchase[3])
+
+    try:
+        # Append the purchase to the ticker list
+        portfolio[ticker].append(purchase)
+    except KeyError:
+        portfolio[ticker] = list() #If the key doesn't exist yet, create it
+        portfolio[ticker].append(purchase)
+
+    print("I purchased {} stock for ${}".format(full_company_name, full_purchase_price))
+
+    print(portfolio)
+
+    for ticker, purchases in portfolio.items():
+        print("------ {} ------".format(ticker))
+        total_portfolio_stock_value = 0
+        for purchase in purchases:
+            total_portfolio_stock_value += purchase[1] * purchase[3]
+            print("     {}".format(purchase))
+        print("Total value of stock in portfolio: ${}\n\n".format(total_portfolio_stock_value))
